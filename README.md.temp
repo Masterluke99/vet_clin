@@ -1,0 +1,33 @@
+# Vet_Clin
+
+**Versão: 1.0.0**
+
+Sistema de gestão para clínicas veterinárias desenvolvido em React e TypeScript.
+
+## Funcionalidades
+
+- Cadastro de animais e tutores
+- Agendamento de atendimentos
+- Controle de produtos e estoque
+- Registro de vendas
+- Gestão de funcionários
+
+## Instalação
+
+```
+npm install
+npm start
+```
+
+## Comandos
+
+- `npm start`: Inicia o aplicativo em modo de desenvolvimento
+- `npm test`: Executa os testes
+- `npm run build`: Compila o aplicativo para produção
+
+## Tecnologias
+
+- React
+- TypeScript
+- Firebase
+- Chakra UI
