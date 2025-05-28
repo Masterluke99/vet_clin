@@ -11,8 +11,7 @@ import historicoIcon from './icones/historico.png';
 import produtosIcon from './icones/produtos.png';
 import vendasIcon from './icones/vendas.png';
 import negocioIcon from './icones/negocio.png';
-import lojaIcon from './icones/loja.png';
-
+  
 // Cores do tema verde
 const primaryGreen = '#2C7A51';
 const secondaryGreen = '#256A45';

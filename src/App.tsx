@@ -2,15 +2,18 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import CadastroAnimal from './telasCadastro/CadastroAnimal';
-import ListaAnimaisComBusca from './listas/relatorios/ListaAnimaisComBusca';
+import ListaAnimaisComBusca from './listas/ListaAnimaisComBusca';
+import ListaAnimais from './listas/ListaAnimais';
+
 import CadastroServico from './telasCadastro/CadastroServico';
 import CadastroAtendimento from './telasCadastro/CadastroAtendimento';
-import HistoricoAtendimentos from './telasCadastro/HistoricoAtendimentos';
+import HistoricoAtendimentos from './relatorios/HistoricoAtendimentos';
 import CadastroFuncionario from './telasCadastro/CadastroFuncionario';
 import CadastroProduto from './telasCadastro/CadastroProduto';
 import CadastroVenda from './telasCadastro/CadastroVenda';
-import ListaTutoresComBusca from './listas/relatorios/ListaTutoresComBusca';
-import ListaProdutosComBusca from './listas/relatorios/ListaProdutosComBusca';
+import ListaTutoresComBusca from './listas/ListaTutoresComBusca';
+import ListaProdutosComBusca from './listas/ListaProdutosComBusca';
+import ListaServicosComBusca from './listas/ListaServicosComBusca';
 import Dashboard from './components/dashboard/Dashboard';
 import DashboardHome from './components/dashboard/DashboardHome';
 import './App.css';
@@ -94,8 +97,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard title="Gestão do Negocio"><DashboardHome /></Dashboard>} />
           <Route path="/animais" element={<Dashboard title="Lista de Animais"><ListaAnimaisComBusca onAddNew={() => window.location.href = '/cadastro-animal'} /></Dashboard>} />
+          <Route path="/gerenciar-animais/:animalId?" element={<Dashboard title="Gerenciar Animais"><ListaAnimais /></Dashboard>} />
           <Route path="/cadastro-animal" element={<Dashboard title="Cadastro de Animal"><CadastroAnimal /></Dashboard>} />
-          <Route path="/servicos" element={<Dashboard title="Serviços"><CadastroServico /></Dashboard>} />
+          <Route path="/servicos" element={<Dashboard title="Lista de Serviços"><ListaServicosComBusca /></Dashboard>} />
+          <Route path="/cadastro-servico" element={<Dashboard title="Cadastro de Serviço"><CadastroServico /></Dashboard>} />
           <Route path="/atendimentos" element={<Dashboard title="Atendimentos"><CadastroAtendimento /></Dashboard>} />
           <Route path="/historico-atendimentos" element={<Dashboard title="Histórico de Atendimentos"><HistoricoAtendimentos /></Dashboard>} />
           <Route path="/funcionarios" element={<Dashboard title="Funcionários"><CadastroFuncionario /></Dashboard>} />
@@ -103,6 +108,7 @@ function App() {
           <Route path="/cadastro-produto" element={<Dashboard title="Cadastro de Produto"><CadastroProduto /></Dashboard>} />
           <Route path="/vendas" element={<Dashboard title="Vendas"><CadastroVenda /></Dashboard>} />
           <Route path="/tutores" element={<Dashboard title="Tutores"><ListaTutoresComBusca /></Dashboard>} />
+          
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

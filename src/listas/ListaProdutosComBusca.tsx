@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../../firebaseConfig';
+import { db } from '../firebaseConfig';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import {
   Box,
@@ -20,26 +20,38 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
+  useToast,
+  useDisclosure,
   NumberInput,
   NumberInputField,
-  useToast,
-  useDisclosure
+  InputGroup,
+  InputLeftElement,
+  Textarea
 } from '@chakra-ui/react';
 
-interface Tutor {
+interface Produto {
   id: string;
   nome: string;
-  idade?: number;
+  descricao?: string;
+  preco?: number;
+  quantidade?: number;
 }
 
-const ListaTutoresComBusca: React.FC = () => {
-  const [tutores, setTutores] = useState<Tutor[]>([]);
+interface Props {
+  onSelect?: (produto: Produto) => void;
+  onAddNew?: () => void;
+}
+
+const ListaProdutosComBusca: React.FC<Props> = ({ onSelect, onAddNew }) => {
+  const [produtos, setProdutos] = useState<Produto[]>([]);
   const [busca, setBusca] = useState('');
   const [foco, setFoco] = useState(false);
-  const [selecionado, setSelecionado] = useState<Tutor | null>(null);
+  const [selecionado, setSelecionado] = useState<Produto | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [novoNome, setNovoNome] = useState('');
-  const [novaIdade, setNovaIdade] = useState('');
+  const [novaDescricao, setNovaDescricao] = useState('');
+  const [novoPreco, setNovoPreco] = useState('');
+  const [novaQuantidade, setNovaQuantidade] = useState('');
   const [salvando, setSalvando] = useState(false);
   const [mensagem, setMensagem] = useState('');
   const toast = useToast();
@@ -48,42 +60,49 @@ const ListaTutoresComBusca: React.FC = () => {
   const bgColor = 'green.50';        // Verde muito claro para o fundo
   const headerBgColor = 'green.100'; // Verde claro para o cabeçalho
   const buttonColorScheme = 'green'; // Verde para botões
-  const borderColor = 'green.200';   // Verde para as bordas
+  const borderColor = 'green.500';   // Verde para as bordas
   const successColor = 'green.500';  // Verde para mensagens de sucesso
   const errorColor = 'red.500';      // Vermelho para mensagens de erro
+
   useEffect(() => {
-    const fetchTutores = async () => {
-      const querySnapshot = await getDocs(collection(db, 'tutores'));
-      setTutores(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Tutor)));
+    const fetchProdutos = async () => {
+      const querySnapshot = await getDocs(collection(db, 'produtos'));
+      setProdutos(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Produto)));
     };
-    fetchTutores();
+    fetchProdutos();
   }, [mensagem]);
 
-  const tutoresFiltrados = busca
-    ? tutores.filter(t => t.nome.toLowerCase().includes(busca.toLowerCase()))
-    : tutores;
+  const produtosFiltrados = busca
+    ? produtos.filter(p => p.nome.toLowerCase().includes(busca.toLowerCase()))
+    : produtos;
 
-  const handleSelect = (tutor: Tutor) => {
-    setSelecionado(tutor);
-    setBusca(tutor.nome);
+  const handleSelect = (produto: Produto) => {
+    setSelecionado(produto);
+    setBusca(produto.nome);
     setFoco(false);
+    if (onSelect) onSelect(produto);
   };
+
   const handleSalvarNovo = async (e: React.FormEvent) => {
     e.preventDefault();
     setSalvando(true);
     setMensagem('');
     try {
-      await addDoc(collection(db, 'tutores'), {
+      await addDoc(collection(db, 'produtos'), {
         nome: novoNome,
-        idade: novaIdade ? Number(novaIdade) : null,
+        descricao: novaDescricao,
+        preco: novoPreco ? Number(novoPreco) : null,
+        quantidade: novaQuantidade ? Number(novaQuantidade) : null,
         criadoEm: new Date()
       });
       setNovoNome('');
-      setNovaIdade('');
-      setMensagem('Tutor cadastrado com sucesso!');
+      setNovaDescricao('');
+      setNovoPreco('');
+      setNovaQuantidade('');
+      setMensagem('Produto cadastrado com sucesso!');
       toast({
-        title: 'Tutor cadastrado',
-        description: 'O tutor foi cadastrado com sucesso',
+        title: 'Produto cadastrado',
+        description: 'O produto foi cadastrado com sucesso',
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -91,10 +110,10 @@ const ListaTutoresComBusca: React.FC = () => {
       });
       onClose();
     } catch (error) {
-      setMensagem('Erro ao cadastrar tutor.');
+      setMensagem('Erro ao cadastrar produto.');
       toast({
         title: 'Erro ao cadastrar',
-        description: 'Ocorreu um erro ao cadastrar o tutor',
+        description: 'Ocorreu um erro ao cadastrar o produto',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -102,20 +121,21 @@ const ListaTutoresComBusca: React.FC = () => {
       });
     }
     setSalvando(false);
-  };  return (
+  };
+  
+  return (
     <Container maxW="600px" mx="auto" mt="40px" p="6" bg={bgColor} borderRadius="lg" shadow="xl" boxShadow="0 5px 20px rgba(0,0,0,0.1)" position="relative">
       <Flex mb={4} align="center">
         <Input
-          placeholder="Buscar tutor pelo nome..."
+          placeholder="Buscar produto pelo nome..."
           value={busca}
           onChange={e => { setBusca(e.target.value); setSelecionado(null); }}
           onFocus={() => setFoco(true)}
           mr={3}
           bg="white"
           borderColor={borderColor}
-        />
-        <Button
-          onClick={onOpen}
+        />        <Button
+          onClick={onAddNew || onOpen}
           colorScheme={buttonColorScheme}
           leftIcon={<Text fontSize="xl">+</Text>}
         >
@@ -123,7 +143,7 @@ const ListaTutoresComBusca: React.FC = () => {
         </Button>
       </Flex>
       
-      {foco && busca && tutoresFiltrados.length > 0 && (
+      {foco && busca && produtosFiltrados.length > 0 && (
         <Box 
           position="absolute" 
           left={6} 
@@ -132,23 +152,24 @@ const ListaTutoresComBusca: React.FC = () => {
           bg="white" 
           borderWidth="1px" 
           borderColor={borderColor}
-          borderRadius="md" 
+          borderRadius="md"
           zIndex={10} 
           maxH="200px" 
           overflowY="auto"
-          shadow="md"
+          shadow="lg"
+          boxShadow="0 4px 12px rgba(0,0,0,0.15)"
         >
           <List styleType="none" m={0} p={0}>
-            {tutoresFiltrados.map(tutor => (
+            {produtosFiltrados.map(produto => (
               <ListItem
-                key={tutor.id}
-                onClick={() => handleSelect(tutor)}
+                key={produto.id}
+                onClick={() => handleSelect(produto)}
                 cursor="pointer"
-                bg={selecionado?.id === tutor.id ? headerBgColor : 'white'}
+                bg={selecionado?.id === produto.id ? headerBgColor : 'white'}
                 p={2}
                 _hover={{ bg: 'green.50' }}
               >
-                <Text>{tutor.nome} {tutor.idade ? `(${tutor.idade} anos)` : ''}</Text>
+                <Text>{produto.nome} {produto.preco ? `(R$ ${produto.preco.toFixed(2)})` : ''}</Text>
               </ListItem>
             ))}
           </List>
@@ -156,18 +177,20 @@ const ListaTutoresComBusca: React.FC = () => {
       )}
       
       <Box mt={6}>
-        <Heading size="md" color="green.700" mb={2}>Tutores cadastrados</Heading>
+        <Heading size="md" color="green.700" mb={2}>Produtos cadastrados</Heading>
         <List styleType="none" p={0}>
-          {tutores.map(tutor => (
+          {produtos.map(produto => (
             <ListItem 
-              key={tutor.id} 
+              key={produto.id} 
               p={2} 
               borderBottomWidth="1px" 
               borderColor={borderColor}
             >
               <Text>
-                <strong>{tutor.nome}</strong> 
-                {tutor.idade && ` - ${tutor.idade} anos`}
+                <strong>{produto.nome}</strong> 
+                {produto.descricao && ` - ${produto.descricao.substring(0, 50)}${produto.descricao.length > 50 ? '...' : ''}`} 
+                {produto.preco !== undefined && produto.preco !== null && ` - R$ ${produto.preco.toFixed(2)}`} 
+                {produto.quantidade !== undefined && produto.quantidade !== null && ` - Estoque: ${produto.quantidade}`}
               </Text>
             </ListItem>
           ))}
@@ -177,7 +200,7 @@ const ListaTutoresComBusca: React.FC = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg="white" p={4}>
-          <ModalHeader color="green.700">Novo Tutor</ModalHeader>
+          <ModalHeader color="green.700">Novo Produto</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSalvarNovo}>
@@ -190,11 +213,31 @@ const ListaTutoresComBusca: React.FC = () => {
                 />
               </FormControl>
               <FormControl mb={3}>
-                <FormLabel>Idade:</FormLabel>
-                <NumberInput min={0} max={120}>
+                <FormLabel>Descrição:</FormLabel>
+                <Textarea 
+                  value={novaDescricao} 
+                  onChange={e => setNovaDescricao(e.target.value)} 
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Preço (R$):</FormLabel>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none" color="gray.300" children="R$" />
+                  <NumberInput min={0} width="100%">
+                    <NumberInputField
+                      value={novoPreco}
+                      onChange={e => setNovoPreco(e.target.value)}
+                      pl="8"
+                    />
+                  </NumberInput>
+                </InputGroup>
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Quantidade em estoque:</FormLabel>
+                <NumberInput min={0}>
                   <NumberInputField
-                    value={novaIdade}
-                    onChange={e => setNovaIdade(e.target.value)}
+                    value={novaQuantidade}
+                    onChange={e => setNovaQuantidade(e.target.value)}
                   />
                 </NumberInput>
               </FormControl>
@@ -233,4 +276,4 @@ const ListaTutoresComBusca: React.FC = () => {
   );
 };
 
-export default ListaTutoresComBusca;
+export default ListaProdutosComBusca;

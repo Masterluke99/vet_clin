@@ -20,7 +20,14 @@ import {
 
 const CadastroTutor: React.FC = () => {
   const [nome, setNome] = useState('');
-  const [idade, setIdade] = useState('');
+  
+  const [celular, setCelular] = useState('');
+  const [email, setEmail] = useState('');
+  const [endereco, setEndereco] = useState(''); 
+  const [cep, setCep] = useState('');
+  const [cidade, setCidade] = useState('');
+  
+
   const [mensagem, setMensagem] = useState('');
   const [salvando, setSalvando] = useState(false);
   const toast = useToast();
@@ -38,11 +45,15 @@ const CadastroTutor: React.FC = () => {
     try {
       await addDoc(collection(db, 'tutores'), {
         nome,
-        idade: idade ? Number(idade) : null,
+        email,
+        endereco,
+        cep,
+        cidade,       
+        celular,
         criadoEm: new Date()
       });
       setNome('');
-      setIdade('');
+      
       setMensagem('Tutor cadastrado com sucesso!');
       
       toast({
@@ -91,16 +102,52 @@ const CadastroTutor: React.FC = () => {
                 focusBorderColor="green.400"
               />
             </FormControl>
-            
-            <FormControl>
-              <FormLabel>Idade</FormLabel>
-              <NumberInput min={0} max={120}>
-                <NumberInputField 
-                  value={idade} 
-                  onChange={e => setIdade(e.target.value)} 
-                />
-              </NumberInput>
-            </FormControl>            <Button 
+            <FormControl isRequired>
+              <FormLabel>Celular</FormLabel>
+              <Input
+                value={celular}   
+                onChange={e => setCelular(e.target.value)}
+                focusBorderColor="green.400"
+                placeholder="(00) 00000-0000"
+                type="tel"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                focusBorderColor="green.400"
+                type="email"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Endereço</FormLabel>
+              <Input
+                value={endereco}
+                onChange={e => setEndereco(e.target.value)}
+                focusBorderColor="green.400"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>CEP</FormLabel>
+              <Input
+                value={cep}
+                onChange={e => setCep(e.target.value)}
+                focusBorderColor="green.400"
+                placeholder="00000-000"
+                type="text"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Cidade</FormLabel>
+              <Input
+                value={cidade}
+                onChange={e => setCidade(e.target.value)}
+                focusBorderColor="green.400"
+              />
+            </FormControl>
+            <Button 
               mt={4}
               type="submit" 
               isLoading={salvando}

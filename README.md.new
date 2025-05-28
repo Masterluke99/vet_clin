@@ -1,7 +1,4 @@
-
-
 # Vet_Clin - Sistema de Gestão para Clínicas Veterinárias
-# Acesse a versão atual do projeto em : https://github.com/Masterluke99/vet_clin
 
 **Versão atual: 1.0.0**
 
@@ -21,45 +18,6 @@ Vet_Clin é uma aplicação web que permite gerenciar todos os aspectos de uma c
 
 Este projeto foi criado com [Create React App](https://github.com/facebook/create-react-app).
 
-# Configuração do Banco de Dados (Firebase)
-
-O gerenciamento dos dados é feito pelo Firebase. Para configurar o projeto, siga os passos abaixo:
-
-1. Crie uma conta no [Firebase](https://firebase.google.com/) se ainda não tiver
-2. Acesse o [Console do Firebase](https://console.firebase.google.com/) e crie um novo projeto
-3. No projeto criado, ative o serviço Firestore Database em "Build > Firestore Database"
-4. Ative também o serviço Authentication em "Build > Authentication" se necessário
-5. Vá para "Project Settings" (configurações do projeto) clicando na engrenagem
-6. Em "Your apps", adicione um aplicativo da web (</> Web)
-7. Registre seu aplicativo com um nome e copie as credenciais fornecidas
-8. No projeto Vet_Clin, atualize o arquivo `src/firebaseConfig.ts` com as credenciais copiadas:
-
-```typescript
-// Substitua pelos dados do seu projeto Firebase
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "seu-projeto.firebaseapp.com",
-  projectId: "seu-projeto",
-  storageBucket: "seu-projeto.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456",
-  measurementId: "G-XXXXXXXXXX" // opcional
-};
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const db = getFirestore(app);
-
-export { db, database };
-```
-
-Após a configuração, o aplicativo criará e gerenciará os dados automaticamente, sem necessidade de criar tabelas manualmente.
-
-Certifique-se de que as dependências do Firebase estão instaladas executando:
-
-```bash
-npm install firebase
-```
 ## Comandos Disponíveis
 
 Na pasta do projeto execute o comando:
@@ -101,4 +59,3 @@ Você não precisa usar `eject`. O conjunto de recursos selecionados é adequado
 Você pode aprender mais na [documentação do Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
 Para aprender React, consulte a [documentação do React](https://reactjs.org/).
->>>>>>> b19b17eb3f3bb50020cfb731f9cac5499f45e4b3

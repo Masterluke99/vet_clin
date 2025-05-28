@@ -15,7 +15,8 @@ import {
   AlertIcon,
   useToast,
   Textarea,
-  Select
+  Select,
+  Text
 } from '@chakra-ui/react';
 
 interface Animal {
@@ -32,7 +33,7 @@ const CadastroAtendimento: React.FC = () => {
   const [animais, setAnimais] = useState<Animal[]>([]);
   const [servicos, setServicos] = useState<Servico[]>([]);
   const [animalId, setAnimalId] = useState('');
-  const [servicoId, setServicoId] = useState('');
+  const [servicosIds, setServicosIds] = useState<string[]>([]);
   const [data, setData] = useState('');
   const [observacoes, setObservacoes] = useState('');
   const [mensagem, setMensagem] = useState('');
@@ -57,21 +58,28 @@ const CadastroAtendimento: React.FC = () => {
     };
     fetchAnimais();
     fetchServicos();
-  }, []);
-  const handleSalvar = async (e: React.FormEvent) => {
+  }, []);  const handleSalvar = async (e: React.FormEvent) => {
     e.preventDefault();
     setSalvando(true);
     setMensagem('');
+
+    // Validações
+    if (servicosIds.length === 0) {
+      setMensagem('Selecione pelo menos um serviço.');
+      setSalvando(false);
+      return;
+    }
+
     try {
       await addDoc(collection(db, 'atendimentos'), {
         animal_id: animalId,
-        servico_id: servicoId,
+        servicos_ids: servicosIds,
         data,
         observacoes,
         criadoEm: new Date()
       });
       setAnimalId('');
-      setServicoId('');
+      setServicosIds([]);
       setData('');
       setObservacoes('');
       setMensagem('Atendimento registrado com sucesso!');
@@ -118,19 +126,33 @@ const CadastroAtendimento: React.FC = () => {
                 ))}
               </Select>
             </FormControl>
-            
-            <FormControl isRequired>
-              <FormLabel>Serviço</FormLabel>
-              <Select 
-                value={servicoId} 
-                onChange={e => setServicoId(e.target.value)}
-                placeholder="Selecione o serviço"
-                focusBorderColor="green.400"
-              >
+              <FormControl isRequired>
+              <FormLabel>Serviços</FormLabel>
+              <Stack spacing={2} border="1px solid" borderColor="gray.200" borderRadius="md" p={3} maxH="200px" overflowY="auto">
                 {servicos.map(s => (
-                  <option key={s.id} value={s.id}>{s.nome}</option>
+                  <Box key={s.id} display="flex" alignItems="center">
+                    <input
+                      type="checkbox"
+                      id={`servico-${s.id}`}
+                      checked={servicosIds.includes(s.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setServicosIds([...servicosIds, s.id]);
+                        } else {
+                          setServicosIds(servicosIds.filter(id => id !== s.id));
+                        }
+                      }}
+                      style={{ marginRight: '8px' }}
+                    />
+                    <label htmlFor={`servico-${s.id}`}>{s.nome}</label>
+                  </Box>
                 ))}
-              </Select>
+              </Stack>
+              {servicosIds.length === 0 && (
+                <Text color="red.500" fontSize="sm" mt={1}>
+                  Selecione pelo menos um serviço
+                </Text>
+              )}
             </FormControl>
             
             <FormControl isRequired>
