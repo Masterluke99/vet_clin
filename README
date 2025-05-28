@@ -1,5 +1,3 @@
-
-
 # Vet_Clin - Sistema de Gestão para Clínicas Veterinárias
 # Acesse a versão atual do projeto em : https://github.com/Masterluke99/vet_clin
 
@@ -101,4 +99,3 @@ Você não precisa usar `eject`. O conjunto de recursos selecionados é adequado
 Você pode aprender mais na [documentação do Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
 Para aprender React, consulte a [documentação do React](https://reactjs.org/).
->>>>>>> b19b17eb3f3bb50020cfb731f9cac5499f45e4b3
