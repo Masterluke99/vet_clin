@@ -1,33 +1,57 @@
-# Vet_Clin - Sistema de Gestão para Clínicas Veterinárias
-# Acesse a versão atual do projeto em: https://github.com/Masterluke99/vet_clin
+# Vet_Clin - Sistema de GestÃ£o para ClÃ­nicas VeterinÃ¡rias
+# Acesse a versÃ£o atual do projeto em: https://github.com/Masterluke99/vet_clin
 
-**Versão atual: 1.0.0**
+**VersÃ£o atual: 1.0.0**
 
-Um sistema completo de gestão para clínicas veterinárias desenvolvido em React com TypeScript e integração com Firebase.
+Um sistema completo de gestÃ£o para clÃ­nicas veterinÃ¡rias desenvolvido em React com TypeScript e integraÃ§Ã£o com Firebase.
 
 ## Sobre o Projeto
 
-Vet_Clin é uma aplicação web que permite gerenciar todos os aspectos de uma clínica veterinária, incluindo:
+Vet_Clin Ã© uma aplicaÃ§Ã£o web que permite gerenciar todos os aspectos de uma clÃ­nica veterinÃ¡ria, incluindo:
 
 - Cadastro de animais e seus tutores
 - Agendamento e registro de atendimentos
-- Histórico médico dos pacientes
+- HistÃ³rico mÃ©dico dos pacientes
 - Controle de produtos e estoque
 - Registro de vendas
-- Cadastro de serviços
-- Gestão de funcionários
+- Cadastro de serviÃ§os
+- GestÃ£o de funcionÃ¡rios
 
 Este projeto foi criado com [Create React App](https://github.com/facebook/create-react-app).
 
-## Configuração do Banco de Dados (Firebase)
+## Capturas de Tela
 
-O gerenciamento dos dados é feito pelo Firebase. Para configurar o projeto, siga os passos abaixo:
+Abaixo estÃ£o capturas de tela das principais funcionalidades do sistema:
 
-1. Crie uma conta no [Firebase](https://firebase.google.com/) se ainda não tiver
+### Painel de GestÃ£o
+
+![Painel de GestÃ£o](screenshots/painel%20de%20gestÃ£o.png)
+
+### Cadastro de Animais
+
+![Cadastro de Animais](screenshots/cadastro%20de%20animais.png)
+
+### Cadastro de Tutores
+
+![Cadastro de Tutores](screenshots/cadastro%20de%20tutores.png)
+
+### Registro de ServiÃ§os
+
+![Registro de ServiÃ§os](screenshots/registro%20de%20serviÃ§os.png)
+
+### Atendimentos
+
+![Atendimentos](screenshots/atendimentos.png)
+
+## Configuraï¿½ï¿½o do Banco de Dados (Firebase)
+
+O gerenciamento dos dados ï¿½ feito pelo Firebase. Para configurar o projeto, siga os passos abaixo:
+
+1. Crie uma conta no [Firebase](https://firebase.google.com/) se ainda nï¿½o tiver
 2. Acesse o [Console do Firebase](https://console.firebase.google.com/) e crie um novo projeto
-3. No projeto criado, ative o serviço Firestore Database em "Build > Firestore Database"
-4. Ative também o serviço Authentication em "Build > Authentication" se necessário
-5. Vá para "Project Settings" (configurações do projeto) clicando na engrenagem
+3. No projeto criado, ative o serviï¿½o Firestore Database em "Build > Firestore Database"
+4. Ative tambï¿½m o serviï¿½o Authentication em "Build > Authentication" se necessï¿½rio
+5. Vï¿½ para "Project Settings" (configuraï¿½ï¿½es do projeto) clicando na engrenagem
 6. Em "Your apps", adicione um aplicativo da web (</> Web)
 7. Registre seu aplicativo com um nome e copie as credenciais fornecidas
 8. No projeto Vet_Clin, atualize o arquivo `src/firebaseConfig.ts` com as credenciais copiadas:
@@ -51,9 +75,9 @@ const db = getFirestore(app);
 export { db, database };
 ```
 
-Após a configuração, o aplicativo criará e gerenciará os dados automaticamente, sem necessidade de criar tabelas manualmente.
+Apï¿½s a configuraï¿½ï¿½o, o aplicativo criarï¿½ e gerenciarï¿½ os dados automaticamente, sem necessidade de criar tabelas manualmente.
 
-Certifique-se de que as dependências do Firebase estão instaladas executando:
+Certifique-se de que as dependï¿½ncias do Firebase estï¿½o instaladas executando:
 
 ```bash
 npm install firebase
@@ -66,32 +90,32 @@ npm install firebase
 - Firebase (Firestore)
 - Chakra UI
 
-## Comandos Disponíveis
+## Comandos Disponï¿½veis
 
 Na pasta do projeto execute o comando:
 
 ### `npm start`
 
-O app será executado no modo desenvolvedor.  
+O app serï¿½ executado no modo desenvolvedor.  
 Abra [http://localhost:3000](http://localhost:3000) no navegador.
 
-A página será recarregada automaticamente quando você fizer alterações no código.
+A pï¿½gina serï¿½ recarregada automaticamente quando vocï¿½ fizer alteraï¿½ï¿½es no cï¿½digo.
 
 ### `npm test`
 
-Inicia o executor de testes no modo interativo de observação.  
-Veja mais sobre [execução de testes](https://facebook.github.io/create-react-app/docs/running-tests) para mais informações.
+Inicia o executor de testes no modo interativo de observaï¿½ï¿½o.  
+Veja mais sobre [execuï¿½ï¿½o de testes](https://facebook.github.io/create-react-app/docs/running-tests) para mais informaï¿½ï¿½es.
 
 ### `npm run build`
 
-Compila o aplicativo para produção na pasta `build`.  
-Empacota corretamente o React no modo de produção e otimiza a compilação para o melhor desempenho.
+Compila o aplicativo para produï¿½ï¿½o na pasta `build`.  
+Empacota corretamente o React no modo de produï¿½ï¿½o e otimiza a compilaï¿½ï¿½o para o melhor desempenho.
 
-A compilação é minificada e os nomes dos arquivos incluem hashes.  
-Seu aplicativo está pronto para ser implantado!
+A compilaï¿½ï¿½o ï¿½ minificada e os nomes dos arquivos incluem hashes.  
+Seu aplicativo estï¿½ pronto para ser implantado!
 
 ## Saiba Mais
 
-Você pode aprender mais na [documentação do Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
+Vocï¿½ pode aprender mais na [documentaï¿½ï¿½o do Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Para aprender React, consulte a [documentação do React](https://reactjs.org/).
+Para aprender React, consulte a [documentaï¿½ï¿½o do React](https://reactjs.org/).
